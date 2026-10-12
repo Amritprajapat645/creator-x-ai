@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator X AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0b12;color:white;font-family:Arial,sans-serif}
+header{padding:22px;background:#171721;border-bottom:1px solid #333}
+h1{margin:0;color:#a99aff}
+main{max-width:850px;margin:auto;padding:18px}
+.card{background:#171721;border:1px solid #30303d;border-radius:16px;padding:18px;margin-bottom:16px}
+input,textarea{width:100%;padding:12px;margin:8px 0;background:#0c0c13;color:white;border:1px solid #383847;border-radius:9px}
+textarea{min-height:80px}
+button{background:#795cff;color:white;border:0;border-radius:9px;padding:12px;font-weight:bold;margin:5px 0}
+button:active{opacity:.8}
+small,.muted{color:#aaa}
+</style>
+</head>
+<body>
+<header>
+<h1>⚡ Creator X AI</h1>
+<p>Instagram Automation Dashboard</p>
+</header>
+<main>
+<div class="card">
+<h2>📊 Dashboard</h2>
+<p>Comments: <b id="comments">0</b></p>
+<p>Replies: <b id="replies">0</b></p>
+<p>DM Actions: <b id="dms">0</b></p>
+<button onclick="toggle()" id="toggle">Automation OFF</button>
+<p class="muted">Demo mode — Instagram से अभी connect नहीं है।</p>
+</div>
+
+<div class="card">
+<h2>🔗 Link Request Settings</h2>
+<label>Keywords / Emojis</label>
+<input id="keywords" value="link,LINK,L,🔗,📩">
+<label>अपना Link</label>
+<input id="link" placeholder="https://example.com">
+<label>Follow नहीं करने वाले के लिए Reply</label>
+<textarea id="notFollow">Please follow me first ❤️ Then comment LINK!</textarea>
+<label>Link Request Reply</label>
+<textarea id="success">Done! Check your DM 📩🔗</textarea>
+<label>DM Message</label>
+<textarea id="dm">Here is your link 🔗 {link}</textarea>
+<button onclick="save()">Save Settings</button>
+</div>
+
+<div class="card">
+<h2>🧪 Test Automation</h2>
+<button onclick="test(false)">Test: Not Following</button>
+<button onclick="test(true)">Test: Follow + LINK</button>
+<div id="result"></div>
+</div>
+
+<div class="card">
+<h2>🔐 Connect Instagram</h2>
+<p class="muted">असली comments और DMs चलाने के लिए official Meta API connection आवश्यक है।</p>
+</div>
+</main>
+<script>
+let active=false;
+let stats={comments:0,replies:0,dms:0};
+function toggle(){
+active=!active;
+document.getElementById('toggle').textContent=active?'Automation ON':'Automation OFF';
+}
+function test(followed){
+if(!active){alert('पहले Automation ON करो!');return;}
+stats.comments++;
+stats.replies++;
+let msg;
+if(!followed && document.getElementById('keywords').value){
+msg=document.getElementById('notFollow').value;
+}else{
+let link=document.getElementById('link').value;
+if(!link){alert('पहले अपना Link डालो!');return;}
+stats.dms++;
+msg=document.getElementById('success').value+' | Demo DM: '+document.getElementById('dm').value.replace('{link}',link);
+}
+document.getElementById('comments').textContent=stats.comments;
+document.getElementById('replies').textContent=stats.replies;
+document.getElementById('dms').textContent=stats.dms;
+document.getElementById('result').innerHTML='<p></p>';
+document.getElementById('result').firstChild.textContent=msg;
+}
+function save(){
+localStorage.setItem('creatorXKeywords',document.getElementById('keywords').value);
+localStorage.setItem('creatorXLink',document.getElementById('link').value);
+alert('Settings saved on this device! ✅');
+}
+</script>
+</body>
+</html>
